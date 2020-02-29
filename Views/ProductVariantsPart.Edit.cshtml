@@ -1,0 +1,19 @@
+@model ProductVariantsPartViewModel
+
+<div class="form-group" asp-validation-class-for="ProductId">
+    <label asp-for="ProductId">@T["ProductId"]</label>
+    <input asp-for="ProductId" class="form-control text-muted" />
+    <span asp-validation-for="ProductId"></span>
+    <span class="hint">
+        @T["The Id of the product"]
+    </span>
+</div>
+
+<div class="form-group" asp-validation-class-for="Sku">
+    <label asp-for="Sku">@T["SKU"] </label>
+    <input asp-for="Sku" class="form-control text-muted" />
+    <span asp-validation-for="Sku"></span>
+    <span class="hint">
+        @T["The SKU of the product."]
+    </span>
+</div>

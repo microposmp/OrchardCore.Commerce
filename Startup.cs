@@ -114,4 +114,17 @@ namespace OrchardCore.Commerce
             services.AddScoped<ICurrencySelector, CommerceSettingsCurrencySelector>();
         }
     }
+
+    [RequireFeatures(CommerceConstants.Features.ProductVariantsPart)]
+    public class ProductVariantsPartStartup : StartupBase
+    {
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IIndexProvider, ProductVariantsPartIdIndexProvider>();
+            services.AddSingleton<IIndexProvider, ProductVariantPartSkuIndexProvider>();
+            services.AddScoped<IDataMigration, ProductVariantsMigration>();
+            services.AddScoped<IContentPartDisplayDriver, ProductVariantsPartDisplayDriver>();
+            services.AddContentPart<ProductVariantsPart>();
+        }
+    }
 }

@@ -7,6 +7,7 @@ namespace OrchardCore.Commerce
             public const string Core = "OrchardCore.Commerce";
             public const string SessionCartStorage = "OrchardCore.Commerce.SessionCartStorage";
             public const string CommerceSettingsCurrencySelector = "OrchardCore.Commerce.CommerceSettingsCurrencySelector";
+            public const string ProductVariantsPart = "OrchardCore.Commerce.ProductVariantsPart";
         }
     }
 }
