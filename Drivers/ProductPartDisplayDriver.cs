@@ -1,21 +1,26 @@
 using System.Threading.Tasks;
+using Fluid;
 using OrchardCore.Commerce.Abstractions;
 using OrchardCore.Commerce.Models;
+using OrchardCore.Commerce.Settings;
 using OrchardCore.Commerce.ViewModels;
 using OrchardCore.ContentManagement.Display.ContentDisplay;
 using OrchardCore.ContentManagement.Display.Models;
 using OrchardCore.DisplayManagement.ModelBinding;
 using OrchardCore.DisplayManagement.Views;
+using OrchardCore.Liquid;
 
 namespace OrchardCore.Commerce.Drivers
 {
     public class ProductPartDisplayDriver : ContentPartDisplayDriver<ProductPart>
     {
         private readonly IProductAttributeService _productAttributeService;
+        private readonly ILiquidTemplateManager _liquidTemplateManager;
 
-        public ProductPartDisplayDriver(IProductAttributeService productAttributeService)
+        public ProductPartDisplayDriver(IProductAttributeService productAttributeService, ILiquidTemplateManager liquidTemplateManager)
         {
             _productAttributeService = productAttributeService;
+            _liquidTemplateManager = liquidTemplateManager;
         }
 
         public override IDisplayResult Display(ProductPart productPart, BuildPartDisplayContext context)
@@ -32,7 +37,19 @@ namespace OrchardCore.Commerce.Drivers
 
         public override async Task<IDisplayResult> UpdateAsync(ProductPart model, IUpdateModel updater, UpdatePartEditorContext context)
         {
-            await updater.TryUpdateModelAsync(model, Prefix, t => t.Sku);
+            if (await updater.TryUpdateModelAsync(model, Prefix, t => t.Sku))
+            {
+                // Set SKU value only if it's not already set.
+                if (string.IsNullOrWhiteSpace(model.Sku))
+                {
+                    var pattern = context.TypePartDefinition.GetSettings<ProductPartSettings>().Pattern;
+
+                    if (!string.IsNullOrEmpty(pattern))
+                    {
+                        model.Sku = await _liquidTemplateManager.RenderAsync(pattern, NullEncoder.Default, model.ContentItem, scope => scope.SetValue("ContentItem", model.ContentItem));
+                    }
+                }
+            }
 
             return Edit(model, context);
         }

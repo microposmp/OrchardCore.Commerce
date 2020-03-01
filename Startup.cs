@@ -114,4 +114,20 @@ namespace OrchardCore.Commerce
             services.AddScoped<ICurrencySelector, CommerceSettingsCurrencySelector>();
         }
     }
+
+    [RequireFeatures(CommerceConstants.Features.ExperimentalProductPart)]
+    public class ExperimentalProductPartStartup: StartupBase
+    {
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            // Product
+            services.AddSingleton<IIndexProvider, ProductPartVariantsIndexProvider>();
+            services.AddScoped<IProductService, ProductVariantsService>();
+            services.AddScoped<IContentTypePartDefinitionDisplayDriver, ProductPartSettingsDisplayDriver>();
+
+            //Price
+            services.AddScoped<IPriceProvider, SkuPriceVariantsProvider>();
+
+        }
+    }
 }

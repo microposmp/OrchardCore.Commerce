@@ -43,3 +43,15 @@ using OrchardCore.Modules.Manifest;
         CommerceConstants.Features.Core
     }
 )]
+
+[assembly: Feature(
+    Id = CommerceConstants.Features.ExperimentalProductPart,
+    Name = "Orchard Core Experimental ProductPart",
+    Category = "Commerce",
+    Description = "An extended product part that will enable product content types with multiple variants (SKU).",
+    Dependencies = new[]
+    {
+        "OrchardCore.Contents",
+        CommerceConstants.Features.Core
+    }
+)]

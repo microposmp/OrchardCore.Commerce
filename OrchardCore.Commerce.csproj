@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OrchardCore.ContentTypes\OrchardCore.ContentTypes.csproj" />
+    <ProjectReference Include="..\OrchardCore.Flows\OrchardCore.Flows.csproj" />
     <ProjectReference Include="MoneyDataType\MoneyDataType.csproj" />
   </ItemGroup>
 
