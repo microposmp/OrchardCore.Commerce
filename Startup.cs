@@ -33,12 +33,14 @@ namespace OrchardCore.Commerce
         public override void ConfigureServices(IServiceCollection services)
         {
             // Product
-            services.AddSingleton<IIndexProvider, ProductPartIndexProvider>();
+            services.AddContentPart<ProductPart>()
+                .UseDisplayDriver<ProductPartDisplayDriver>();
+
             services.AddScoped<IDataMigration, ProductMigrations>();
+            services.AddSingleton<IIndexProvider, ProductPartIndexProvider>();
             services.AddScoped<IContentAliasProvider, ProductPartContentAliasProvider>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IContentPartDisplayDriver, ProductPartDisplayDriver>();
-            services.AddContentPart<ProductPart>();
+            
             // Attributes
             services.AddContentField<BooleanProductAttributeField>();
             services.AddScoped<IContentFieldDisplayDriver, BooleanProductAttributeFieldDriver>();
@@ -52,15 +54,18 @@ namespace OrchardCore.Commerce
             services.AddScoped<IProductAttributeProvider, ProductAttributeProvider>();
             services.AddScoped<IProductAttributeService, ProductAttributeService>();
             services.AddScoped<IPredefinedValuesProductAttributeService, PredefinedValuesProductAttributeService>();
+
             // Price
+            services.AddContentPart<PricePart>()
+                .UseDisplayDriver<PricePartDisplayDriver>()
+                .AddHandler<PricePartHandler>();
+
             services.AddScoped<IDataMigration, PriceMigrations>();
-            services.AddScoped<IContentPartHandler, PricePartHandler>();
-            services.AddScoped<IContentPartDisplayDriver, PricePartDisplayDriver>();
             services.AddScoped<IContentTypePartDefinitionDisplayDriver, PricePartSettingsDisplayDriver>();
-            services.AddContentPart<PricePart>();
             services.AddScoped<IPriceProvider, PriceProvider>();
             services.AddScoped<IPriceService, PriceService>();
             services.AddScoped<IPriceSelectionStrategy, SimplePriceStrategy>();
+
             // Price Variants
             services.AddScoped<IDataMigration, PriceVariantsMigrations>();
             services.AddScoped<IContentPartHandler, PriceVariantsPartHandler>();
