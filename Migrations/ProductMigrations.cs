@@ -24,12 +24,12 @@ namespace OrchardCore.Commerce.Migrations
                 .WithDescription("Makes a content item into a product."));
 
             SchemaBuilder.CreateMapIndexTable(nameof(ProductPartIndex), table => table
-                .Column<string>("Sku", col => col.WithLength(128))
-                .Column<string>("ContentItemId", c => c.WithLength(26))
+                .Column<string>(nameof(ProductPartIndex.Sku), col => col.WithLength(128))
+                .Column<string>(nameof(ProductPartIndex.ContentItemId), c => c.WithLength(26))
             );
 
             SchemaBuilder.AlterTable(nameof(ProductPartIndex), table => table
-                .CreateIndex("IDX_ProductPartIndex_Sku", "Sku")
+                .CreateIndex($"IDX_{nameof(ProductPartIndex)}_{nameof(ProductPartIndex.Sku)}", nameof(ProductPartIndex.Sku))
             );
 
             return 1;
